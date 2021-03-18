@@ -1,23 +1,51 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import AddCustomer from './components/AddCustomer';
+import { useState } from 'react';
+import Cards from './components/Cards';
+import Footer from './components/Footer';
 
 function App() {
+
+  const [customers, setCustomers] = useState([
+    {
+      "customerId":101,
+      "customerName":"Customer 1",
+      "customerLocation":"Location 1"
+    },
+    {
+      "customerId":102,
+      "customerName":"Customer 2",
+      "customerLocation":"Location 2"
+    },
+    {
+      "customerId":103,
+      "customerName":"Customer 3",
+      "customerLocation":"Location 3"
+    }
+  ])
+
+  const addCustomerOnClick = (customer)=>{
+    console.log(customer)
+    const id = Math.random()
+    const newCustomer = {id,...customer}
+    setCustomers([...customers,newCustomer])
+  }
+
+  const deleteCustomerOnClick = (id)=>{
+    setCustomers(customers.filter((cust)=> cust.customerId !== id))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className='container'>
+        <div className='outer-box'>
+          <Header title = "Customer Info App"></Header>
+          <AddCustomer addCustomer = {addCustomerOnClick}/>
+        </div>
+        { customers.length > 0 ? <Cards customers={customers} deleteCus = {deleteCustomerOnClick}></Cards> : 'No Customers There To Show!!'}
+      </div>
+      <Footer />
     </div>
   );
 }
